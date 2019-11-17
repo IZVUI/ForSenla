@@ -1,0 +1,62 @@
+import java.util.Scanner;
+
+public class Task2
+{
+    public static  void main(String[] args)
+    {
+        NodNok nodNok = new NodNok();
+        int num1,num2;
+        int NOD,NOK;
+        String buffer;
+        Scanner in = new Scanner(System.in);
+        System.out.println("Введите первое число");
+        buffer = in.next();
+        if(buffer.matches("\\D"))
+        {
+            throw new IllegalArgumentException();
+        }
+        num1 = Integer.parseInt(buffer);
+        System.out.println("Введите второе число");
+        buffer = in.next();
+        if(buffer.matches("\\D"))
+        {
+            throw new IllegalArgumentException();
+        }
+        num2 = Integer.parseInt(buffer);
+
+        NOK = nodNok.NOK(num1,num2);
+        NOD = nodNok.NOD(NOK,num1,num2);
+        System.out.println("НОД:"+NOD + "\nНОК:"+NOK);
+    }
+}
+
+
+
+public class NodNok
+{
+    public int NOK(int number1,int number2)
+    {
+        int NOK;
+        if(number2>number1)
+        {
+            int buf = number1;
+            number1 = number2;
+            number2 = buf;
+        }
+        if(number1%number2==0)
+        {
+            return number1;
+        }
+        NOK = 2*number1;
+        while (NOK%number2!=0)
+        {
+            NOK+=number1;
+        }
+        return NOK;
+    }
+
+    public int NOD(int NOK,int number1,int number2)
+    {
+        return number1*number2/NOK;
+    }
+}
