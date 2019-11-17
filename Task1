@@ -1,0 +1,58 @@
+import  java.util.Scanner;
+
+public class Task1
+{
+    public static void main(String[] args)
+    {
+        int number;
+        String buffer;
+        Scanner in = new Scanner(System.in);
+        System.out.println("Введите целое число");
+        buffer = in.next();
+        if(buffer.contains("."))
+        {
+            System.out.println(("было введено не целое число"));
+            return;
+        }
+        number = Integer.parseInt(buffer);
+        if(new SimpleNumber().IsSimple(number))
+        {
+            System.out.println("Простое");
+        }
+        else
+        {
+            System.out.println("Составное");
+        }
+        if(new EvenNumber().IsEven(number))
+        {
+            System.out.println("Чётное");
+        }
+        else
+        {
+            System.out.println("Нечётное");
+        }
+    }
+
+}
+
+
+public class SimpleNumber
+{
+    public boolean IsSimple(int num)
+    {
+        for(int i=2;i<=Math.sqrt(num);i++)
+        {
+            if(num%i==0)return false;
+        }
+        return true;
+    }
+}
+
+
+public class EvenNumber
+{
+    public boolean IsEven(int num)
+    {
+        return (num%2==0);
+    }
+}
