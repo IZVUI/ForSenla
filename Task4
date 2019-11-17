@@ -1,0 +1,39 @@
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
+public class Task4
+{
+    public static void main(String[] args)
+    {
+        Scanner in = new Scanner(System.in);
+        String word;
+        System.out.println("Введите текст:");
+        AmountWordsInSentence amount = new AmountWordsInSentence(in.nextLine());
+        System.out.println("Введите слово: ");
+        word = in.next();
+        System.out.println(amount.Amount(word));
+    }
+}
+
+
+public class AmountWordsInSentence
+{
+    public AmountWordsInSentence(String text)
+    {
+        txt = text;
+    }
+    private String txt;
+    public int Amount(String word)
+    {
+        int amount = 0;
+        String[] str = txt.split("\\b");
+        for(int i=0;i<str.length;i++)
+        {
+            if(str[i].equalsIgnoreCase(word))
+            {
+                amount++;
+            }
+        }
+        return amount;
+    }
+}
