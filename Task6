@@ -1,0 +1,156 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.*;
+
+public class Task6
+{
+    public static void main(String[] args)
+    {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Введите грузоподъёмность рюкзака");
+        Bag bag = new Bag(Double.parseDouble(in.next()));
+        ItemBase IB = new ItemBase();
+        IB.FillBase();
+        bag.FillBag(IB);
+        bag.PrintBagItems();
+    }
+}
+
+
+public class ItemBase
+{
+    ArrayList<Item> items = new ArrayList<Item>();
+    ArrayList<Item> notSelected = new ArrayList<Item>();
+
+    public void FillBase()
+    {
+        Item item;
+        int menu = -1;
+        Scanner in = new Scanner(System.in);
+        while(true)
+        {
+            item = new Item();
+            System.out.println("Введите 0 для завершения заполнения,\n не 0 для продолжения");
+            menu = Integer.parseInt(in.next());
+            if(menu==0)break;
+            System.out.println("Введите стоимость вещи");
+            item.cost = Double.parseDouble(in.next());
+            System.out.println("Введите вес вещи");
+            item.weigth = Double.parseDouble(in.next());
+            items.add(item);
+        }
+
+    }
+
+    public void Sort()
+    {
+        for(int i=0;i<items.size();i++)
+        {
+            for(int j=i+1;j<items.size();j++)
+            {
+                if(items.get(i).cost-items.get(i).weigth < items.get(j).cost-items.get(j).weigth)
+                {
+                    Item buf = items.get(i);
+                    items.set(i,items.get(j));
+                    items.set(j,buf);
+                }
+
+            }
+        }
+    }
+}
+
+
+public class Item
+{
+    public Double cost,weigth;
+
+    @Override
+    public String toString()
+    {
+        return "Стоимость: "+Double.toString(cost)+" Вес: "+Double.toString(weigth);
+    }
+}
+
+
+
+
+
+
+public class Bag
+{
+    public Bag(double capacity)
+    {
+        loadingCapacity = capacity;
+    }
+    double loadingCapacity;
+    ArrayList<Item> items = new ArrayList<Item>();
+
+    public double TotalWeigth()
+    {
+        double weigth = 0;
+        for (Item item:items)
+        {
+            weigth+=item.weigth;
+        }
+        return weigth;
+    }
+
+    public double TotalCost()
+    {
+        double cost = 0;
+        for (Item item:items)
+        {
+            cost += item.cost;
+        }
+        return cost;
+    }
+
+
+
+    public void FillBag(ItemBase itemBase)
+    {
+        
+        itemBase.Sort();
+        for (Item item:itemBase.items)
+        {
+            if(this.TotalWeigth()+item.weigth<=this.loadingCapacity)
+            {
+                items.add(item);
+            }
+            else
+            {
+                itemBase.notSelected.add(item);
+            }
+
+        }
+        for(Item newItem:itemBase.notSelected)
+        {
+            for(Item item:items)
+            {
+                if(newItem.cost>item.cost)
+                {
+                    if(this.TotalWeigth()-item.weigth+newItem.weigth<=loadingCapacity)
+                    {
+                        itemBase.notSelected.add(item);
+                        items.set(items.indexOf(item),newItem);
+                        itemBase.notSelected.remove(newItem);
+                        break;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+
+   public void PrintBagItems()
+   {
+       for(Item item:items)
+       {
+           System.out.println(item.toString());
+       }
+       System.out.println("Общая стоимость: "+this.TotalCost()+"\nОбщий вес: "+this.TotalWeigth());
+   }
+}
